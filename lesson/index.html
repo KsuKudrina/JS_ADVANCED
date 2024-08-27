@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!--Symbol---- Symbol.for ---- Symbol.keyFor -->
+    <script>
+      // const symbol = Symbol();
+      // const dogID = Symbol("dog");
+
+      // const dog1 = Symbol("dog");
+      // const dog2 = Symbol("dog");
+      // console.log(dog1 == dog2);
+      // console.log(dogID.description); // dog можно посмотреть описание
+
+      // let id = Symbol("id");
+      // let buddy = {
+      //   [id]: "Жучка",
+      // };
+      // console.log(buddy[id]); //Жучка
+
+      // buddy[id] = "Бобик"; //Идентификаторы создаются уникальными всегда
+      // console.log(buddy[id]);
+
+      // // Проблемы которые могут возникнуть, без использования Symbol
+      // let buddy = { name: "Тузик" }; //Объявляем в нашем скрипте свойство 'id'
+      // buddy.id = "Наш идентификатор"; // ...другой скрипт тоже хочет свой идентификатор...
+      // buddy.id = "Их идентификатор"; // Ой! Свойство перезаписано сторонней библиотекой!
+
+      //Как решить.
+
+      // let buddies = {
+      //   [Symbol("Жучка")]: "Жучка",
+      //   [Symbol("Мурка")]: "Мурка",
+      //   [Symbol("Таракашка")]: "Таракашка",
+      //   elephant: "Слон",
+      // };
+
+      // console.log(buddies);
+
+      // let newBuddies = {};
+      // Object.assign(newBuddies, buddies); // Object.assign скопирует все свойства, B TOM числе, и символьные.
+      // buddies.cat = "Барсик";
+      // console.log(newBuddies);
+      // console.log(buddies);
+
+      // ---- Symbol.for ----
+      // // читаем символ из глобального реестра и записываем его в переменную
+      // let id = Symbol.for("id"); // если символа не существует, он будет создан
+
+      // // читаем его снова и записываем в другую переменную (возможно, из другого места кода)
+      // let idAgain = Symbol.for("id");
+
+      // // проверяем: это один и тот же символ
+      // alert(id === idAgain); // true
+
+      // ---- Symbol.keyFor ----
+      // получаем символ по имени
+      let sym = Symbol.for("name");
+      let sym2 = Symbol.for("id");
+      // получаем имя по символу
+      console.log(Symbol.keyFor(sym)); // name
+      console.log(Symbol.keyFor(sym2)); // id описание символа по идентификатору
+    </script>
+    <!-- Symbol.iterator ---- Array.from -->
+    <script>
+      // Мы хотим из него сделать последовательность с таким образом: for(let number of range), где на выходе получим последовательность от 1 до 17
+      // let range = {
+      //   from: 1,
+      //   to: 17,
+      // };
+
+      // 1. вызов for.. of сначала вызывает эту функцию
+      range[Symbol.iterator] = function () {
+        //  ... она возвращает объект итератора:
+        // 2. Далее, for(..of..) работает только с этим итератором, запрашивая у него новые значения
+        return {
+          current: this.from,
+          last: this.to,
+
+          //  3. next() вызывается на каждой итерации цикла for(.. of..)
+          next() {
+            //  4. он должен вернуть значение в виде объекта {done:.., value :... }
+            return this.current <= this.last
+              ? { done: false, value: this.current++ }
+              : { done: true };
+          },
+        };
+      };
+
+      // // теперь работает!
+      for (let number of range) {
+        console.log(number);
+      }
+
+      // Можно было и вместе но тогда this будет общий
+      // let range = {
+      //   from: 1,
+      //   to: 10,
+      //   [Symbol.iterator]() {
+      //     this.current = this.from;
+      //     return this;
+      //   },
+      //   next() {
+      //     return this.current <= this.to
+      //       ? { done: false, value: this.current++ }
+      //       : { done: true };
+      //   },
+      // };
+      // for (let number of range) {
+      //   console.log(number);
+      // }
+
+      // ---- Array.from ----
+      // let pseudo = {
+      //   0: "first",
+      //   1: "second",
+      //   2: "new elem",
+      //   length: 3,
+      // };
+      // let array = Array.from(pseudo);
+      // console.log(array);
+      // console.log(array.pop());
+
+      // let pseudo2 = "It`s Array Like!";
+      // let array2 = Array.from(pseudo2);
+      // console.log(array2);
+    </script>
+    <!-- Map & Set -->
+    <!-- Map -->
+    <script>
+      // let map = new Map();
+      // map.set("1", "str1"); // строка в качестве ключа
+      // map.set(1, "num1"); // цифра как ключ
+      // map.set(true, "bool1"); // булево значение как ключ
+
+      // // помните, обычный объект Object приводит ключи к строкам?
+      // // Мар сохраняет тип ключей, так что в этом случае сохранится 2 разных значения:
+      // console.log(map.get(1)); // "num1"
+      // console.log(map.get("1")); // "str1"
+      // console.log(map.size); // 3
+
+      // // get set
+      // let map = new Map();
+      // map.set("1", "We").set(1, "likes").set(true, "JS");
+
+      // console.log(map);
+
+      // // Перебор коллекции Мар
+
+      // let recipeMap = new Map([
+      //   ["огурец", 500],
+      //   ["помидор", 350],
+      //   ["лук", 50],
+      // ]);
+
+      // console.log(recipeMap);
+      // // перебор по ключам (овощи)
+      // for (let vegetable of recipeMap.keys()) {
+      //   console.log(vegetable); // огурец, помидор, лук
+      // }
+      // // перебор по значениям (числа)
+      // for (let amount of recipeMap.values()) {
+      //   console.log(amount); // 500, 350, 50
+      // }
+      // // перебор по элементам в формате [ключ, значение]
+      // for (let entry of recipeMap) // то же самое, что и recipeMap.entries()
+      //   console.log(entry); // огурец,500 (и так далее)
+
+      // // выполняем функцию для каждой пары (ключ, значение)
+      // recipeMap.forEach((value, key, map) => {
+      //   console.log("${key}: ${value}"); // огурец: 500 и так далее
+      // });
+
+      // // Работа с объектами
+      // //Object.entries поможет создать Мар:
+      // let map = new Map(Object.entries(obj));
+      // // Object. fromEntries поможет создать объект из Мар:
+      // let obj = Object.fromEntries(map);
+    </script>
+    <!-- Set -->
+    <script>
+      // let buddies = [
+      //   "Жучка",
+      //   "Тузик",
+      //   "Булька",
+      //   "Тузик",
+      //   "Бобик",
+      //   "Жучка",
+      //   "Валера",
+      //   "Жучка",
+      //   "Тузик",
+      //   "Манька",
+      // ];
+
+      // let uniqueBuddies = new Set(buddies);
+      // console.log(uniqueBuddies); // мы увидим, что у нас взяли 10 косточек, а собачек всего 6
+
+      // console. log (uniqueBuddies); // мы увидим, что у нас взяли 10 косточек, а собачек было всего 6
+      // Перевести обратно в массив нам поможет уже известный нам метод Array.from:
+
+      // let buddies = [
+      //   "Жучка",
+      //   "Тузик",
+      //   "Булька",
+      //   "Тузик",
+      //   "Бобик",
+      //   "Жучка",
+      //   "Валера",
+      //   "Жучка",
+      //   "Тузик",
+      //   "Манька",
+      // ];
+      // let uniqueBuddies = new Set(buddies);
+      // console.log(uniqueBuddies);
+      // let arr = Array.from(uniqueBuddies);
+      // console.log(arr);
+    </script>
+    <!-- Модули -->
+    <script>
+      // Экспорт
+      // Чтобы получить доступ к объектам модулей, надо их экспортировать
+      // export const name = "square"; // Ключевое слово export
+
+      // export function draw(ctx, length, x, y, color) {
+      //   ctx.fillStyle = color;
+      //   ctx.fillRect(x, y, length, length);
+      //   return {
+      //     Length: length,
+      //     x: x,
+      //     у: у,
+      //     color: color,
+      //   };
+      // }
+      // // // внутри блоков экспортировать нельзя
+
+      // // // Импорт
+      // import {
+      //   name,
+      //   draw,
+      //   reportArea,
+      //   reportPerimeter,
+      // } from " ./modules/square.js";
+      // import * as Square from "./modules/square.js"; // Импортировать всё что можно
+      // /js-examples/modules/ basic - modules / modules / square.js
+      // ./ modules / square.js // Точка в начале пути мы можем использовать для      обозначения текущей директории.
+    </script>
+  </body>
+</html>
