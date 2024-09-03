@@ -47,32 +47,39 @@
 
     const initialData = [
         {
+            id: 'apple'
             product: "Apple iPhone 13",
             reviews: [
                 {
                     id: "1",
+                    name: 'Вика',
                     text: "Отличный телефон! Батарея держится долго.",
                 },
                 {
                     id: "2",
+                    name: 'Александр',
                     text: "Камера супер, фото выглядят просто потрясающе.",
                 },
             ],
         },
         {
+            id: 'samsung',
             product: "Samsung Galaxy Z Fold 3",
             reviews: [
                 {
                     id: "3",
+                    name: 'Сергей',
                     text: "Интересный дизайн, но дорогой.",
                 },
             ],
         },
         {
+            id: 'sony',
             product: "Sony PlayStation 5",
             reviews: [
                 {
                     id: "4",
+                    name: 'Мария',
                     text: "Люблю играть на PS5, графика на высоте.",
                 },
             ],
