@@ -1,0 +1,48 @@
+body {
+    color: #363434;
+}
+
+input[type='radio'] {
+    accent-color: rgb(246, 57, 63);
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    background-color: #363434;
+    margin-bottom: 30px;
+}
+
+.title-head {
+    color: rgb(246, 57, 63);
+}
+
+.reviews-title {
+    color: #363434;
+}
+
+.review-user {
+    color: rgb(246, 57, 63);
+}
+
+.review-text {
+    color: #363434;
+}
+
+#btn {
+    padding: 5px 10px;
+    color: rgb(246, 57, 63);
+    border-radius: 5px;
+}
+
+#btn:hover {
+    background-color: rgb(246, 57, 63);
+    color: #fff;
+}
+
+.errcomment-product, .errcomment-name, .errcomment-text {
+    font-size: 12px;
+    color: red;
+}
